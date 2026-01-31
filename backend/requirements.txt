@@ -1,0 +1,28 @@
+# Requirements pour le Projet 8 - Gestion Clinique Sécurisée
+
+# Framework Django
+Django==6.0.1
+
+# REST Framework
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.1
+
+# Base de données PostgreSQL
+psycopg2-binary==2.9.9
+
+# CORS Headers
+django-cors-headers==4.3.1
+
+# Extensions Django (pour runserver_plus avec HTTPS)
+django-extensions==3.2.3
+Werkzeug==3.0.1
+pyOpenSSL==24.0.0
+
+# Chiffrement des mots de passe (Argon2)
+argon2-cffi==23.1.0
+
+# Variables d'environnement (optionnel)
+python-decouple==3.8
+
+# Documentation API (optionnel)
+drf-yasg==1.21.7

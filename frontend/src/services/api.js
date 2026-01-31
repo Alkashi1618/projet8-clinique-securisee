@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Instance Axios principale
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000/api/',
+  baseURL: process.env.REACT_APP_API_URL || 'https://127.0.0.1:8000/api/',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ api.interceptors.response.use(
         const refresh = localStorage.getItem('refresh');
 
         const response = await axios.post(
-          `${process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000/api/'}token/refresh/`,
+          `${process.env.REACT_APP_API_URL || 'https://127.0.0.1:8000/api/'}token/refresh/`,
           { refresh }
         );
 
@@ -67,21 +67,20 @@ export const authAPI = {
 // ================= PATIENTS =================
 export const patientsAPI = {
   getAll: () => api.get('patients/'),
-  getById: (id) => api.get(`patients/${id}/`),
+  getById: (id) => api.get(`patients/?id=${id}`),
   create: (data) => api.post('patients/', data),
-  update: (id, data) => api.put(`patients/${id}/`, data),
-  delete: (id) => api.delete(`patients/${id}/`),
+  update: (id, data) => api.put('patients/', { ...data, id }),
+  delete: (id) => api.delete('patients/', { data: { id } }),
 };
 
 // ================= RENDEZ-VOUS =================
 export const rendezvousAPI = {
   getAll: () => api.get('rendezvous/'),
-  getById: (id) => api.get(`rendezvous/${id}/`),
+  getById: (id) => api.get(`rendezvous/?id=${id}`),
   create: (data) => api.post('rendezvous/', data),
-  update: (id, data) => api.patch(`rendezvous/${id}/`, data),
-  delete: (id) => api.delete(`rendezvous/${id}/`),
-  updateStatus: (id, statut) =>
-    api.patch('rendezvous/', { id, statut }),
+  update: (id, data) => api.put('rendezvous/', { ...data, id }),
+  delete: (id) => api.delete('rendezvous/', { data: { id } }),
+  updateStatus: (id, statut) => api.patch('rendezvous/', { id, statut }),
 };
 
 // ================= USERS / MÉDECINS =================

@@ -113,11 +113,6 @@ const Login = () => {
             <p className="text-sm text-gray-600 text-center mb-2">
               Comptes de démonstration
             </p>
-            <div className="text-xs text-gray-500 space-y-1">
-              <p>👨‍⚕️ Médecin: <code className="bg-gray-100 px-1 rounded">medecin1</code></p>
-              <p>👩‍💼 Secrétaire: <code className="bg-gray-100 px-1 rounded">secretaire1</code></p>
-              <p>🔑 Mot de passe: <code className="bg-gray-100 px-1 rounded">password123</code></p>
-            </div>
           </div>
         </Card>
 
