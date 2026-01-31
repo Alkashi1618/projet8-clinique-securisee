@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.contrib.auth.models import User, Group
 
 from .models import Patient, RendezVous
 from .serializers import PatientSerializer, RendezVousSerializer
@@ -75,3 +76,30 @@ def rendezvous_api(request):
         rdv.statut = request.data["statut"]
         rdv.save()
         return Response({"message": "Statut mis à jour"})
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def medecins_api(request):
+    """
+    Retourne la liste des utilisateurs appartenant au groupe 'Medecin'
+    """
+    try:
+        group = Group.objects.get(name="Medecin")
+        medecins = User.objects.filter(groups=group)
+
+        data = [
+            {
+                "id": user.id,
+                "username": user.username,
+                "prenom": user.first_name,
+                "nom": user.last_name,
+                "email": user.email,
+            }
+            for user in medecins
+        ]
+
+        return Response(data)
+
+    except Group.DoesNotExist:
+        return Response([])

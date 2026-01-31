@@ -84,4 +84,9 @@ export const rendezvousAPI = {
     api.patch('rendezvous/', { id, statut }),
 };
 
+// ================= USERS =================
+export const usersAPI = {
+  getAll: () => api.get('medecins/'),
+};
+
 export default api;
