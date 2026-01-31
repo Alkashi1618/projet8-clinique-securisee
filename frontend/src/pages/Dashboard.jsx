@@ -117,7 +117,7 @@ const Dashboard = () => {
           Tableau de bord
         </h1>
         <p className="text-gray-600 mt-1">
-          Bienvenue, {user?.username} 👋
+          Bienvenue, {user?.username}
         </p>
       </div>
 
@@ -194,7 +194,7 @@ const Dashboard = () => {
                     className="border-b border-gray-100 hover:bg-gray-50"
                   >
                     <td className="py-3 px-4 text-sm">
-                      Patient #{rdv.patient}
+                      {rdv.patient}
                     </td>
                     <td className="py-3 px-4 text-sm">
                       {formatDate(rdv.date)}

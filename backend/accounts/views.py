@@ -2,7 +2,6 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.contrib.auth.models import User, Group
-
 from .models import Patient, RendezVous
 from .serializers import PatientSerializer, RendezVousSerializer
 from .permissions import IsAdmin, IsSecretaire
@@ -27,13 +26,11 @@ def me(request):
 @permission_classes([IsAuthenticated])
 def patients_api(request):
 
-    # 🔹 Lecture : tous les utilisateurs connectés
     if request.method == "GET":
         patients = Patient.objects.all()
         serializer = PatientSerializer(patients, many=True)
         return Response(serializer.data)
 
-    # 🔒 Création : Admin ou Secrétaire
     if not (
         IsAdmin().has_permission(request, None)
         or IsSecretaire().has_permission(request, None)
@@ -51,13 +48,11 @@ def patients_api(request):
 @permission_classes([IsAuthenticated])
 def rendezvous_api(request):
 
-    # 🔹 Lecture : tous
     if request.method == "GET":
         rdv = RendezVous.objects.all()
         serializer = RendezVousSerializer(rdv, many=True)
         return Response(serializer.data)
 
-    # 🔒 Création / modification : Admin ou Secrétaire
     if not (
         IsAdmin().has_permission(request, None)
         or IsSecretaire().has_permission(request, None)
@@ -81,25 +76,17 @@ def rendezvous_api(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def medecins_api(request):
-    """
-    Retourne la liste des utilisateurs appartenant au groupe 'Medecin'
-    """
-    try:
-        group = Group.objects.get(name="Medecin")
-        medecins = User.objects.filter(groups=group)
+    medecins = User.objects.filter(groups__name="Medecin")
 
-        data = [
-            {
-                "id": user.id,
-                "username": user.username,
-                "prenom": user.first_name,
-                "nom": user.last_name,
-                "email": user.email,
-            }
-            for user in medecins
-        ]
+    data = [
+        {
+            "id": m.id,
+            "username": m.username,
+            "prenom": m.first_name,
+            "nom": m.last_name,
+        }
+        for m in medecins
+    ]
 
-        return Response(data)
+    return Response(data)
 
-    except Group.DoesNotExist:
-        return Response([])

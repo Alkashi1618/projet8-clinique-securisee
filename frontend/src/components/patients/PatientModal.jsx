@@ -52,7 +52,6 @@ const PatientModal = ({
       ...prev,
       [name]: value,
     }));
-    // Effacer l'erreur du champ modifié
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -102,6 +101,11 @@ const PatientModal = ({
     }
   };
 
+  // Debug: afficher les médecins reçus
+  useEffect(() => {
+    console.log('Médecins dans le modal:', medecins);
+  }, [medecins]);
+
   return (
     <Modal
       isOpen={isOpen}
@@ -134,10 +138,13 @@ const PatientModal = ({
               <option value="">Sélectionner un médecin</option>
               {medecins.map((medecin) => (
                 <option key={medecin.id} value={medecin.id}>
-                  Dr. {medecin.prenom} {medecin.nom}
+                  Dr. {medecin.prenom || medecin.username} {medecin.nom || ''}
                 </option>
               ))}
             </select>
+            {errors.medecin && (
+              <p className="text-sm text-red-500">{errors.medecin}</p>
+            )}
           </div>
         </div>
 

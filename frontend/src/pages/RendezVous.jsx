@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { rendezvousAPI, patientsAPI } from '../services/api';
+import { rendezvousAPI, patientsAPI, usersAPI } from '../services/api';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
@@ -45,13 +45,14 @@ const RendezVous = () => {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [rdvRes, patientsRes] = await Promise.all([
+      const [rdvRes, patientsRes, medecinsRes] = await Promise.all([
         rendezvousAPI.getAll(),
         patientsAPI.getAll(),
+        usersAPI.getMedecins(),
       ]);
       setRendezVous(rdvRes.data);
       setPatients(patientsRes.data);
-      setMedecins([]); // À adapter selon votre API
+      setMedecins(medecinsRes.data); // À adapter selon votre API
       setError('');
     } catch (err) {
       setError(handleAPIError(err));
@@ -271,7 +272,7 @@ const RendezVous = () => {
                             {getPatientInfo(rdv.patient)}
                           </p>
                           <p className="text-sm text-gray-600">
-                            Dr. Médecin #{rdv.medecin}
+                            Dr. Médecin {rdv.medecin.username}
                           </p>
                         </div>
 

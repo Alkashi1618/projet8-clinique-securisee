@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-//import { patientsAPI, authAPI } from '../services/api';
 import { patientsAPI, usersAPI } from '../services/api';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -53,14 +52,15 @@ const Patients = () => {
 
   };
 
-  const loadMedecins = async () => {
-      try {
-          const response = await usersAPI.getMedecins();
-          setMedecins(response.data);
-      } catch (err) {
-        console.error('Erreur chargement médecins:', err);
-      }
-  };
+const loadMedecins = async () => {
+  try {
+    const response = await usersAPI.getMedecins();
+    console.log('Médecins chargés:', response.data); // Pour debug
+    setMedecins(response.data);
+  } catch (err) {
+    console.error('Erreur chargement médecins:', err);
+  }
+};
 
 
   const handleAddPatient = () => {
